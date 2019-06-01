@@ -1,16 +1,35 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
-import { createStore } from "redux";
+import { createStore, combineReducers } from "redux";
 const reducer = (state, action) => {
   if (action.type === "changeState") {
     return action.payload.newState;
   }
   return "state";
 };
+
+const productReducer = (state = [], action) => {
+  // 비동기 로직이 없다. 순수 함수다.
+  return state;
+};
+
+const userReducer = (state = "", action) => {
+  if (action.type === "updateUser") {
+    return action.payload;
+  }
+  return state;
+};
+
+// 네임드 익스포트.
+const allReducers = combineReducers({
+  products: productReducer,
+  user: userReducer
+});
+
 // 초기화 과정
 const store = createStore(
-  reducer,
+  allReducers,
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 ); // state.
 // Expected the reducer to be a function.
@@ -28,9 +47,9 @@ store.subscribe(() => console.log("subscriber", store.getState()));
 
 // 2. publish: action => 객체다.
 const action = {
-  type: "changeState",
+  type: "updateUser",
   payload: {
-    newState: "New State"
+    user: "Tom"
   }
 };
 
