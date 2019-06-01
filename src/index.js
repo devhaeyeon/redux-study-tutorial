@@ -1,46 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
-import { createStore, combineReducers } from "redux";
-const reducer = (state, action) => {
+import { Provider } from "react-redux";
+import { store } from "./redux/store";
+/*const reducer = (state, action) => {
   if (action.type === "changeState") {
     return action.payload.newState;
   }
   return "state";
-};
-
-const productReducer = (state = [], action) => {
-  // 비동기 로직이 없다. 순수 함수다.
-  return state;
-};
-
-const userReducer = (state = "", action) => {
-  if (action.type === "updateUser") {
-    return action.payload;
-  }
-  return state;
-};
-
-// 네임드 익스포트.
-const allReducers = combineReducers({
-  products: productReducer,
-  user: userReducer
-});
-
-// 초기화 과정
-const store = createStore(
-  allReducers,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-); // state.
-// Expected the reducer to be a function.
-// 스토어가 그냥 만들어 지는 게 아님.
-// reducer는 순수한 펑션으로 이뤄진다. !! 중요,.
-// 화살표 두개. 입력 파라미터가 2개이다.
-
-console.log(store, store.getState());
-// 디스페치 -> 퍼블리시
-// 서브스크라이브 -> 가입
-// 상태 가져오는 getState.
+};*/
 
 // 1.subscribe , 3. 데이터 수신.
 store.subscribe(() => console.log("subscriber", store.getState()));
@@ -57,4 +25,9 @@ store.dispatch(action); // state를 mutate를 하기 위한 것이다. state를 
 // 서브스크라이브 가입자에게 바뀐 메서드를 전달
 // 코딩은 뷰, 액션까지 구현했지만 내부적으로 스테이트 받고, 액션 받고 난다음에 새로운 스테이트를 리턴한다.
 
-ReactDOM.render(<App />, document.getElementById("root"));
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById("root")
+);
